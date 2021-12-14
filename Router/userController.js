@@ -9,16 +9,16 @@ let status;
 let statusCode;
 let data;
 let token;
-router.post('/registerUser',async function(req,res,next){
+router.get('/registerUser',async function(req,res,next){
     var datetime = new Date();
-     var userCreate =  new userModel(req.body);
+     var userCreate =  new userModel(req.query);
     userCreate.joinDate = datetime
     let pass = passwordHash.generate(userCreate.password)
     userCreate.password=pass
     let dbUser;
     try{
-        dbUser = await userModel.find({email:req.body.email});      
-         if(dbUser.length>0){
+        dbUser = await userModel.find({email:req.query.email});      
+         if(dbUser.length>0){q
             data="Email already exists!!",
             status="failure",
             statusCode=100
@@ -42,8 +42,9 @@ router.get('/login',async function(req,res,next){
     let loginUser;
    
     try {
-      loginUser=  await userModel.findOne({email:req.body.email});
-      if(passwordHash.verify(req.body.password,loginUser.password)){
+        console.log(req.query)
+      loginUser=  await userModel.findOne({email:req.query.email});
+      if(passwordHash.verify(req.query.password,loginUser.password)){
            const tokenData =jwt.sign({ sub: loginUser._id }, 'shhhhhhared-secret', { expiresIn: '7d' });
     //    let data1=loginUser + jwt.sign({ secret: Buffer.from('shhhhhhared-secret', 'base64', { expiresIn: '7d' }),algorithms: ['RS256'] })
        data=loginUser,
