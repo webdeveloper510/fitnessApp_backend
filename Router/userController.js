@@ -51,7 +51,7 @@ router.get('/login',async function(req,res,next){
         status="success",
         statusCode=200,
         token=tokenData
-        console.log( jwt_decode(tokenData)
+        console.log( jwt_decode(tokenData) 
         )
       }
         else{
